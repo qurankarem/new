@@ -1,0 +1,471 @@
+/* General Body Styles */
+body {
+  margin: 0;
+  font-family: 'Noto Sans Arabic', 'Amiri', serif; /* Prioritize Noto Sans Arabic for modern look */
+  background: #f8f5ed; /* Lighter, warmer background */
+  display: flex;
+  height: 100vh;
+  transition: background 0.4s ease-in-out, color 0.4s ease-in-out;
+  overflow: hidden; /* Prevent body scrollbars */
+  color: #333; /* Default text color */
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 250px; /* Slightly wider for better readability */
+  background: #242423; /* Dark blue */
+  color: #050505; /* Lighter text for contrast */
+  overflow-y: auto;
+  padding: 20px 15px; /* More padding */
+  box-shadow: 3px 0 10px #00000033; /* Softer shadow */
+  transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+  position: relative;
+  flex-shrink: 0;
+  z-index: 100; /* Ensure sidebar is above other content on mobile */
+}
+
+.sidebar.collapsed {
+  width: 60px; /* Collapsed width */
+  transform: translateX(0); /* Ensure it's visible */
+}
+
+.sidebar.collapsed h3,
+.sidebar.collapsed #surahSearch,
+.sidebar.collapsed ul {
+  display: none;
+}
+
+.sidebar.collapsed .toggle-sidebar-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  left: auto;
+  font-size: 24px; /* Larger icon */
+}
+
+.sidebar h3 {
+  text-align: center;
+  margin-bottom: 20px; /* More space */
+  font-size: 1.6em; /* Larger heading */
+  color: #ffffff;
+}
+
+/* --- START: Surah List Two Columns --- */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid; /* Use CSS Grid for layout */
+  grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+  gap: 10px 12px; /* Gap between rows and columns */
+}
+
+.sidebar li {
+  padding: 10px 12px; /* More padding */
+  margin: 0; /* Reset margin as gap handles spacing */
+  background: #ffffff; /* Slightly lighter blue for list items */
+  border-radius: 8px; /* More rounded corners */
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.05em;
+  user-select: none; /* Prevent text selection */
+}
+
+.sidebar li:hover {
+  background: #f0d802; /* Teal highlight */
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+/* --- END: Surah List Two Columns --- */
+
+#surahSearch {
+  width: calc(100% - 20px); /* Adjust for padding */
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #000000;
+  box-sizing: border-box;
+  font-size: 1em;
+  transition: background 0.3s ease;
+}
+
+#surahSearch::placeholder {
+  color: #a0a0a0;
+}
+
+#surahSearch:focus {
+  outline: none;
+  background: #ffffff;
+}
+
+.toggle-sidebar-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  padding: 0;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.toggle-sidebar-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Main Viewer Area */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px; /* More padding */
+  overflow-y: auto; /* Allow scrolling for main content if needed */
+}
+
+.viewer {
+  max-width: 90%; /* Slightly less wide to give more breathing room */
+  max-height: 75vh; /* More vertical space */
+  border: 10px solid #d4c7b8; /* Softer border color */
+  border-radius: 15px; /* More rounded */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25); /* Deeper shadow */
+  background: #ffffff; /* White background for pages */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: background 0.4s ease-in-out, border-color 0.4s ease-in-out;
+  position: relative;
+  gap: 8px; /* Slightly more gap between pages */
+  flex-shrink: 0;
+}
+
+.viewer img {
+  max-width: 50%;
+  max-height: 100%;
+  object-fit: contain;
+  transform-origin: center center;
+  transition: transform 0.3s ease-out; /* Smoother zoom transition */
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85); /* More opaque */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  display: none;
+}
+
+.spinner {
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #1abc9c; /* Teal spinner */
+  border-radius: 50%;
+  width: 50px; /* Larger spinner */
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Controls Section */
+.controls {
+  margin-top: 25px; /* More space */
+  display: flex;
+  gap: 12px; /* More gap between buttons */
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+button {
+  padding: 10px 18px; /* More padding */
+  font-size: 15px; /* Slightly larger font */
+  border: none;
+  border-radius: 10px; /* More rounded */
+  background: #2c3e50; /* Dark blue */
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  display: flex; /* For icon and text alignment */
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+button:hover {
+  background: #1abc9c; /* Teal on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+#pageNumber {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #555;
+  align-self: center; /* Align with buttons */
+  padding: 0 10px;
+}
+
+/* Progress Bar */
+.progress {
+  width: 100%;
+  max-width: 700px; /* Wider progress bar */
+  height: 8px; /* Thicker */
+  background: #e0e0e0;
+  margin-top: 20px; /* More space */
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+  height: 100%;
+  background: #1abc9c; /* Teal progress */
+  width: 0%;
+  transition: width 0.4s ease-out;
+}
+
+/* Stats Box */
+#stats {
+  margin-top: 15px;
+  font-size: 15px;
+  color: #666;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* Dark Mode */
+body.dark {
+  background: #1a1a1a; /* Darker background */
+  color: #e0e0e0; /* Lighter text */
+}
+
+body.dark .viewer {
+  background: #2a2a2a; /* Darker viewer background */
+  border-color: #444; /* Darker border */
+}
+
+body.dark button {
+  background: #444; /* Darker buttons */
+  color: #e0e0e0;
+}
+
+body.dark button:hover {
+  background: #1abc9c; /* Still teal hover */
+}
+
+body.dark .sidebar {
+  background: #111; /* Even darker sidebar */
+}
+
+body.dark .sidebar li {
+  background: #e8ec01;
+}
+
+body.dark .sidebar li:hover {
+  background: #fcfcfc;
+}
+
+body.dark #surahSearch {
+  background: #222;
+  color: #e0e0e0;
+}
+
+body.dark #surahSearch::placeholder {
+  color: #888;
+}
+
+body.dark .loading-overlay {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+body.dark .spinner {
+  border-left-color: #1abc9c;
+}
+
+body.dark #pageNumber,
+body.dark #stats {
+  color: #b0b0b0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: 180px; /* Adjust height for mobile */
+    padding: 15px 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    position: fixed; /* Fixed position for mobile sidebar */
+    top: 0;
+    left: 0;
+    transform: translateX(-100%); /* Hide by default */
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .sidebar.collapsed {
+    transform: translateX(0); /* Show when collapsed (actually expanded) */
+    width: 100%;
+    height: 100vh; /* Full height when open */
+  }
+
+  .sidebar.collapsed h3,
+  .sidebar.collapsed #surahSearch,
+  .sidebar.collapsed ul {
+    display: block; /* Show content when sidebar is "collapsed" (open) */
+  }
+
+  .sidebar .toggle-sidebar-btn {
+    position: fixed; /* Keep button visible */
+    top: 15px;
+    left: 15px;
+    z-index: 101; /* Above sidebar */
+    background: #2c3e50; /* Button background */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  }
+
+  .sidebar.collapsed .toggle-sidebar-btn {
+    left: calc(100% - 55px); /* Move to right when sidebar is open */
+    background: #1abc9c; /* Change color when open */
+  }
+
+  .sidebar h3 {
+    margin-top: 50px; /* Space for toggle button */
+  }
+
+  /* --- START: Surah List Single Column on Mobile --- */
+  .sidebar ul {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column on small screens */
+    gap: 8px 0; /* Adjust gap for single column */
+    justify-items: center; /* Center items */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    max-height: calc(100vh - 180px); /* Limit height to prevent overflow */
+    padding-right: 5px; /* Space for scrollbar */
+  }
+
+  .sidebar li {
+    flex-basis: auto; /* Reset flex-basis */
+    max-width: 100%; /* Take full width */
+    white-space: normal; /* Allow text to wrap */
+    font-size: 1em;
+    width: 100%; /* Ensure full width */
+    box-sizing: border-box; /* Include padding and border in width */
+  }
+  /* --- END: Surah List Single Column on Mobile --- */
+
+  #surahSearch {
+    width: calc(100% - 20px);
+    margin: 0 10px 10px 10px;
+  }
+
+  .main {
+    flex: 1;
+    padding: 10px;
+    margin-top: 60px; /* Space for fixed toggle button */
+  }
+
+  .viewer {
+    flex-direction: column; /* Stack pages vertically on small screens */
+    max-height: 80vh;
+    gap: 0;
+    border-width: 5px; /* Thinner border */
+  }
+
+  .viewer img {
+    max-width: 100%;
+    max-height: 50%;
+  }
+
+  .viewer img:last-child { /* Hide right page on small screens */
+    display: none !important;
+  }
+
+  .controls {
+    margin-top: 15px;
+    gap: 8px;
+  }
+
+  button {
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  #pageNumber {
+    font-size: 1em;
+  }
+
+  .progress {
+    max-width: 95%;
+    height: 6px;
+    margin-top: 15px;
+  }
+
+  #stats {
+    font-size: 13px;
+    margin-top: 10px;
+  }
+}
+
+/* Fullscreen mode */
+.fullscreen-viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: #f8f5ed; /* Match body background */
+  border-radius: 0;
+  max-width: 100vw;
+  max-height: 100vh;
+  border: none;
+  padding: 0; /* Remove padding in fullscreen */
+  gap: 0; /* Remove gap in fullscreen */
+}
+
+body.dark .fullscreen-viewer {
+  background: #1a1a1a;
+}

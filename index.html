@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>القران الكريم</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/jpg" href="icon.jpg">
+  <style>
+
+    /* تنسيق الأزرار الجديدة */
+    .controls button {
+      background: linear-gradient(135deg, #6e6fbe, #6e6fbe); /* تدرج أخضر */
+      border: none;
+      border-radius: 50px; /* يجعل الزر شبه دائري */
+      padding: 12px 20px;
+      font-size: 15px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* تأثير عند المرور */
+    .controls button:hover {
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+
+    /* تأثير عند الضغط */
+    .controls button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    /* تأثير الموجة (Ripple) */
+    .controls button::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      transform: scale(0);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .controls button:active::after {
+      width: 200%;
+      height: 200%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      transition: transform 0.6s, opacity 0.8s;
+    }
+
+    /* ترتيب الأزرار */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    /* تنسيق النص بجانب الأزرار */
+    #pageNumber {
+      font-size: 16px;
+      font-weight: bold;
+      color: #2c3e50;
+      align-self: center;
+      padding: 0 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- الشريط الجانبي -->
+  <aside class="sidebar" id="sidebar">
+    <button class="toggle-sidebar-btn" id="toggleSidebarBtn">☰</button>
+    <h3>الفهرس</h3>
+    <input type="text" id="surahSearch" placeholder="🔍 ابحث عن سورة" onkeyup="filterSurahs()">
+    <ul id="surahList"></ul>
+  </aside>
+
+  <!-- المنطقة الرئيسية -->
+  <main class="main">
+    <!-- عارض الصفحات -->
+    <div class="viewer" id="viewer">
+      <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+      </div>
+      <img id="pageImageLeft" src="" alt="صفحة المصحف">
+      <img id="pageImageRight" src="" alt="صفحة المصحف">
+    </div>
+
+    <!-- أزرار التحكم -->
+    <div class="controls">
+      <button onclick="prevPage()">⬅ السابق</button>
+      <span id="pageNumber">صفحة —</span>
+      <button onclick="nextPage()">التالي ➡</button>
+      <button onclick="zoomIn()">🔍 تكبير</button>
+      <button onclick="zoomOut()">🔎 تصغير</button>
+      <button onclick="toggleDarkMode()">🌙/☀️ الوضع الليلي</button>
+      <button onclick="toggleFullScreen()">⛶ ملء الشاشة</button>
+      <button onclick="shareAyah()">📤 مشاركة</button>
+      <button onclick="showGoToPagePrompt()">📑 اذهب لصفحة</button>
+    </div>
+
+    <!-- شريط التقدم -->
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- صندوق الإحصائيات -->
+    <div id="stats"></div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>استمع للتحويل للصفحه</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #0f172a; /* خلفية داكنة */
+      margin: 0;
+      direction: ltr; /* إجبار الكتابة من اليسار لليمين */
+    }
+    h1 {
+      font-size: 4em;
+      font-family: 'Poppins', sans-serif;
+      font-weight: bold;
+      text-transform: none; /* بدون أي تحويل نص */
+      background: linear-gradient(90deg, #00e0ff, #00ff87, #ff00d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      animation: shine 4s linear infinite;
+      margin-bottom: 30px;
+    }
+    @keyframes shine {
+      0% { filter: brightness(1); }
+      50% { filter: brightness(1.5); }
+      100% { filter: brightness(1); }
+    }
+    h1::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+      animation: moveShine 3s infinite;
+    }
+    @keyframes moveShine {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    /* زر الصوت */
+    button {
+      background: linear-gradient(90deg, #00e0ff, #00ff87);
+      border: none;
+      color: #0f172a;
+      font-size: 1.2em;
+      font-weight: bold;
+      padding: 12px 24px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(0,255,200,0.7);
+    }
+  </style>
+</head>
+<body>
+  <h1>Mohamed Abd Elmgeed</h1>
+
+  <!-- مشغل الصوت -->
+  <audio id="bgAudio">
+    <source src="https://ia803409.us.archive.org/5/items/Islamic_Tape-258_uP_bY_mUSLEm/sharawy_doaa_15.mp3" type="audio/mpeg">
+    Your browser does not support audio playback.
+  </audio>
+
+  <!-- زر التحكم -->
+  <button id="soundBtn">تشغيل الصوت 🔊</button>
+
+  <script>
+    const audio = document.getElementById("bgAudio");
+    const btn = document.getElementById("soundBtn");
+
+    // محاولة التشغيل التلقائي
+    window.addEventListener("load", () => {
+      audio.play().then(() => {
+        btn.textContent = "إيقاف الصوت 🔇";
+      }).catch(() => {
+        btn.textContent = "تشغيل الصوت 🔊";
+      });
+    });
+
+    // عند الضغط على الزر
+    btn.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        btn.textContent = "إيقاف الصوت 🔇";
+      } else {
+        audio.pause();
+        btn.textContent = "تشغيل الصوت 🔊";
+      }
+    });
+
+    // عند انتهاء الصوت → الانتقال إلى index.html
+    audio.addEventListener("ended", () => {
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
